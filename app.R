@@ -5,9 +5,6 @@
 
 
 
-
-#### IMPORTS ####
-
 # Shiny packages
 library(shiny)
 library(shinydashboard)
@@ -18,6 +15,15 @@ library(shinybusy)
 library(shinyBS)
 
 # Other packages
+library(tidyverse)
+library(stringr)
+library(gridExtra)
+library(forcats)
+library(lazyMe)
+library(DT)
+library(shinyalert)
+library(openxlsx)
+
 
 
 
@@ -39,14 +45,19 @@ library(shinyBS)
 #### SERVER ####
 
 server <- function(input, output, session) {
+  DATA <- tidyHikes(openxlsx::read.xlsx("data/Randonnée.xlsx"))
+  WB <- openxlsx::loadWorkbook("data/Randonnée.xlsx")
   # Reactive values
   values <- reactiveValues(
-    x = faithful[, 2]
+    data = DATA,
+    vecMassif = unlist(str_split(data$Massif, " & ")),
+    vecLieu  = unlist(str_split(data$Lieu, ", ")),
+    vecCompagnie  = unlist(str_split(data$Compagnie, ", "))
   )
 
   # Server functions
-  firstTabServer("first_tab", values)
-  secondTabServer("second_tab", values)
+  dashboardServer("dashboard", values)
+  browserServer("browser", values)
 }
 
 
@@ -65,29 +76,34 @@ ui <- dashboardPage(
   dashboardSidebar(
     sidebarMenu(
       # tabs
-      menuItem("First tab", tabName = "first_tab",
-               icon = icon("dashboard")),
-      menuItem("Second tab", tabName = "second_tab",
-               icon = icon("th"),
-               badgeLabel = "new", badgeColor = "green")
+      menuItem("Statistiques", tabName = "dashboard",
+               icon = icon("dashboard", class = "fa")),
+      menuItem("Historique", tabName = "browser",
+               icon = icon("clipboard-list", class = "fa"))
     )
   ),
 
   # Body
   dashboardBody(
+    # Background color
+    tags$head(tags$style(HTML('
+      .content-wrapper {
+        background-color: #fff;
+      }'
+    ))),
+
     # Loading spinner
     useShinyjs(),
-    #add_busy_spinner(spin = "fading-circle"),
 
-    # CSS style
+    # CSS style sheet to use
     tags$head(
       tags$link(rel = "stylesheet", type = "text/css", href = "style.css")
     ),
 
     # Tabs body
     tabItems(
-      tabItem(tabName = "first_tab", fluidPage(firstTabUi("first_tab"))),
-      tabItem(tabName = "second_tab", fluidPage(secondTabui("second_tab")))
+      tabItem(tabName = "dashboard", fluidPage(dashboardUi("dashboard"))),
+      tabItem(tabName = "browser", fluidPage(browserUi("browser")))
     )
   )
 )
