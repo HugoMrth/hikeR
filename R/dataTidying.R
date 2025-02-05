@@ -6,9 +6,15 @@ tidyHikes <- function(data) {
       Durée = Durée * 24,
       DuréeChar = paste0(floor(Durée), "h", str_pad(round(60 * (Durée - floor(Durée)), 0), 2, "left", "0")),
       Année = as.factor(year(Date)),
-      Chaussures = as.factor(Chaussures)
+      Chaussures = as.factor(Chaussures),
+      Contexte = as.factor(Contexte)
     )
 }
 
 
+# cells <- xlsx_cells("data/Randonnée.xlsx")
+# formats <- xlsx_formats("data/Randonnée.xlsx")
+#
+# trekID <- cells[cells$col == 1, c("row", "local_format_id")][2:(nrow(DATA)+1),]$local_format_id
+# trekID <- ifelse(trekID == 3, NA, trekID)
 

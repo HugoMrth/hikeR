@@ -23,7 +23,7 @@ library(lazyMe)
 library(DT)
 library(shinyalert)
 library(openxlsx)
-
+library(tidyxl)
 
 
 
@@ -46,6 +46,7 @@ library(openxlsx)
 
 server <- function(input, output, session) {
   DATA <- tidyHikes(openxlsx::read.xlsx("data/Randonnée.xlsx"))
+  # values <- list(data = DATA)
   WB <- openxlsx::loadWorkbook("data/Randonnée.xlsx")
   # Reactive values
   values <- reactiveValues(
