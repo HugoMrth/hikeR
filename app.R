@@ -35,13 +35,6 @@ library(tidyxl)
 # sapply(list.files("R/", full.names = TRUE), source)
 
 
-
-
-
-
-
-
-
 #### SERVER ####
 
 server <- function(input, output, session) {
@@ -50,15 +43,12 @@ server <- function(input, output, session) {
   WB <- openxlsx::loadWorkbook("data/Randonnée.xlsx")
   # Reactive values
   values <- reactiveValues(
-    data = DATA,
-    vecMassif = unlist(str_split(data$Massif, " & ")),
-    vecLieu  = unlist(str_split(data$Lieu, ", ")),
-    vecCompagnie  = unlist(str_split(data$Compagnie, ", "))
+    data = DATA
   )
 
   # Server functions
   dashboardServer("dashboard", values)
-  browserServer("browser", values)
+  #browserServer("browser", values)
 }
 
 
@@ -70,17 +60,18 @@ server <- function(input, output, session) {
 ui <- dashboardPage(
   # Header
   dashboardHeader(
-    title = "My template"
+    title = " "
   ),
 
   # Sidebar
   dashboardSidebar(
     sidebarMenu(
       # tabs
-      menuItem("Statistiques", tabName = "dashboard",
-               icon = icon("dashboard", class = "fa")),
-      menuItem("Historique", tabName = "browser",
-               icon = icon("clipboard-list", class = "fa"))
+      menuItem(h2("hikeR"), tabName = "dashboard"#, icon = icon("dashboard", class = "fa")
+               )
+      # ,
+      # menuItem(h2("Historique"), tabName = "browser",
+      #          icon = icon("clipboard-list", class = "fa"))
     )
   ),
 
@@ -90,7 +81,19 @@ ui <- dashboardPage(
     tags$head(tags$style(HTML('
       .content-wrapper {
         background-color: #fff;
-      }'
+      }
+
+    .dataTable {
+        font-family: Bahnschrift, sans-serif;
+        font-size: 16px;
+    }
+    thead th {
+        background-color: #2a9d8f;
+        color: white;
+    }
+    tbody tr:nth-child(even) {
+        background-color: #AEEAE3;
+    }'
     ))),
 
     # Loading spinner
@@ -103,8 +106,9 @@ ui <- dashboardPage(
 
     # Tabs body
     tabItems(
-      tabItem(tabName = "dashboard", fluidPage(dashboardUi("dashboard"))),
-      tabItem(tabName = "browser", fluidPage(browserUi("browser")))
+      tabItem(tabName = "dashboard", fluidPage(dashboardUi("dashboard")))
+      #,
+      #tabItem(tabName = "browser", fluidPage(browserUi("browser")))
     )
   )
 )
