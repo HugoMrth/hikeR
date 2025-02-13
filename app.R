@@ -6,24 +6,25 @@
 
 
 # Shiny packages
-library(shiny)
-library(shinydashboard)
-library(shinyFiles)
-library(shinyWidgets)
-library(shinyjs)
-library(shinybusy)
-library(shinyBS)
+if (!require("shiny")) install.packages("shiny")
+if (!require("shinydashboard")) install.packages("shinydashboard")
+if (!require("shinyFiles")) install.packages("shinyFiles")
+if (!require("shinyWidgets")) install.packages("shinyWidgets")
+if (!require("shinyjs")) install.packages("shinyjs")
+if (!require("shinybusy")) install.packages("shinybusy")
+if (!require("shinyBS")) install.packages("shinyBS")
 
 # Other packages
-library(tidyverse)
-library(stringr)
-library(gridExtra)
-library(forcats)
-library(lazyMe)
-library(DT)
-library(shinyalert)
-library(openxlsx)
-library(tidyxl)
+if (!require("tidyverse")) install.packages("tidyverse")
+if (!require("stringr")) install.packages("stringr")
+if (!require("gridExtra")) install.packages("gridExtra")
+if (!require("forcats")) install.packages("forcats")
+if (!require("remotes")) install.packages("remotes")
+if (!require("lazyMe")) remotes::install_github("HugoMrth/lazyMe")
+if (!require("DT")) install.packages("DT")
+if (!require("shinyalert")) install.packages("shinyalert")
+if (!require("openxlsx")) install.packages("openxlsx")
+if (!require("tidyxl")) install.packages("tidyxl")
 
 
 
@@ -100,9 +101,9 @@ ui <- dashboardPage(
     useShinyjs(),
 
     # CSS style sheet to use
-    tags$head(
-      tags$link(rel = "stylesheet", type = "text/css", href = "style.css")
-    ),
+    # tags$head(
+    #   tags$link(rel = "stylesheet", type = "text/css", href = "style.css")
+    # ),
 
     # Tabs body
     tabItems(
