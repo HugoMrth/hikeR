@@ -15,8 +15,8 @@ tidyHikes <- function(data) {
 
 
 # cells <- xlsx_cells("data/Randonnée.xlsx")
-# formats <- xlsx_formats("data/Randonnée.xlsx")
 #
-# trekID <- cells[cells$col == 1, c("row", "local_format_id")][2:(nrow(DATA)+1),]$local_format_id
-# trekID <- ifelse(trekID == 3, NA, trekID)
+#
+# trekID <- cells[cells$col == 1, c("row", "local_format_id")][2:(nrow(DATA)),]$local_format_id
+# trekID <- ifelse(trekID != 3 & trekID != 90, NA, trekID)
 

@@ -61,11 +61,12 @@ server <- function(input, output, session) {
 ui <- dashboardPage(
   # Header
   dashboardHeader(
-    title = " "
+    title = "hikeR"
   ),
 
   # Sidebar
   dashboardSidebar(
+    disable = TRUE,
     sidebarMenu(
       # tabs
       menuItem(h2("hikeR"), tabName = "dashboard"#, icon = icon("dashboard", class = "fa")

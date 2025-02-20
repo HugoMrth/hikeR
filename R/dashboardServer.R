@@ -8,8 +8,6 @@ dashboardServer <- function(id, values) {
       #### ObserveEvents ####
 
 
-
-
       #### Outputs ####
 
       #### __Datatable ####
@@ -20,17 +18,17 @@ dashboardServer <- function(id, values) {
           Km = by(values$data$Km, values$data$Année, sum),
           "Dp" = by(values$data$`D+`, values$data$Année, sum),
           "Dm" = by(values$data$`D-`, values$data$Année, sum)
-        )
-        rownames(df) <- NULL
-
-        datatable(df) %>%
-          formatRound(columns = "Km", digits = 0, mark = " ") %>%
-          formatRound(columns = "Dp", digits = 0, mark = " ") %>%
-          formatRound(columns = "Dm", digits = 0, mark = " ")
+        ) %>%
+          mutate(
+            Km = formatC(Km, digits = 0, big.mark = " ", format = "f"),
+            Dp = formatC(Dp, digits = 0, big.mark = " ", format = "f"),
+            Dm = formatC(Dm, digits = 0, big.mark = " ", format = "f")
+          )
       },
       rownames = FALSE,
       options = list(
-        pageLength = 5
+        pageLength = 5,
+        lengthChange = FALSE
       )
       )
 
@@ -42,39 +40,44 @@ dashboardServer <- function(id, values) {
           "Dp" = by(values$data$`D+`, values$data$Chaussures, sum),
           "Dm" = by(values$data$`D-`, values$data$Chaussures, sum)
         ) %>%
-        arrange(-Km)
-        rownames(df) <- NULL
-
-        datatable(df) %>%
-          formatRound(columns = "Km", digits = 0, mark = " ") %>%
-          formatRound(columns = "Dp", digits = 0, mark = " ") %>%
-          formatRound(columns = "Dm", digits = 0, mark = " ")
+        arrange(-Km) %>%
+          mutate(
+            Km = formatC(Km, digits = 0, big.mark = " ", format = "f"),
+            Dp = formatC(Dp, digits = 0, big.mark = " ", format = "f"),
+            Dm = formatC(Dm, digits = 0, big.mark = " ", format = "f")
+          )
       },
       rownames = FALSE,
       options = list(
-        pageLength = 5
+        pageLength = 5,
+        lengthChange = FALSE
       )
       )
 
       output$statParTrek <- renderDT({
+        dfData <- values$data[!str_detect(values$data$Contexte, "Vacances"), ]
         df <- data.frame(
-          Trek = levels(values$data$Contexte),
-          Jours = as.numeric(table(values$data$Contexte)),
-          Km = by(values$data$Km, values$data$Contexte, sum),
-          "Dp" = by(values$data$`D+`, values$data$Contexte, sum),
-          "Dm" = by(values$data$`D-`, values$data$Contexte, sum)
+          Trek = levels(dfData$Contexte),
+          Jours = as.numeric(table(dfData$Contexte)),
+          Km = by(dfData$Km, dfData$Contexte, sum),
+          Dp = by(dfData$`D+`, dfData$Contexte, sum),
+          Dm = by(dfData$`D-`, dfData$Contexte, sum)
         ) %>%
-        arrange(-Jours, -Km)
-        rownames(df) <- NULL
-
-        datatable(df) %>%
-          formatRound(columns = "Km", digits = 0, mark = " ") %>%
-          formatRound(columns = "Dp", digits = 0, mark = " ") %>%
-          formatRound(columns = "Dm", digits = 0, mark = " ")
+          filter(Jours > 1) %>%
+          arrange(-Jours, -Km) %>%
+          mutate(
+            Km = round(Km, 0),
+            Dp = round(Dp, 0),
+            Dm = round(Dm, 0),
+            DpKm = round(Dp/Km, 0)
+          )
+        colnames(df) <- c("Itinéraire", "Jours", "Km", "D+", "D-", "D+/Km")
+        df
       },
       rownames = FALSE,
       options = list(
-        pageLength = 15
+        pageLength = 12,
+        lengthChange = FALSE
       )
       )
 
@@ -89,7 +92,8 @@ dashboardServer <- function(id, values) {
       },
       rownames = FALSE,
       options = list(
-        pageLength = 10
+        pageLength = 5,
+        lengthChange = FALSE
       )
       )
 
@@ -104,7 +108,8 @@ dashboardServer <- function(id, values) {
       },
       rownames = FALSE,
       options = list(
-        pageLength = 10
+        pageLength = 5,
+        lengthChange = FALSE
       )
       )
 
@@ -119,7 +124,8 @@ dashboardServer <- function(id, values) {
       },
       rownames = FALSE,
       options = list(
-        pageLength = 15
+        pageLength = 15,
+        lengthChange = FALSE
       )
       )
 

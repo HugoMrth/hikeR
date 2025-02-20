@@ -6,13 +6,11 @@ dashboardUi <- function(id) {
              DTOutput(ns("statParAn")),
              DTOutput(ns("statParChaussure"))
       ),
-      column(width = 4,
+      column(width = 5,
              DTOutput(ns("statParTrek"))
       ),
-      column(width = 2,
-             DTOutput(ns("statParMassif"))
-      ),
-      column(width = 2,
+      column(width = 3,
+             DTOutput(ns("statParMassif")),
              DTOutput(ns("statParCompagnie"))
       )
     ),
