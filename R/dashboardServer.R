@@ -69,9 +69,9 @@ dashboardServer <- function(id, values) {
             Km = round(Km, 0),
             Dp = round(Dp, 0),
             Dm = round(Dm, 0),
-            DpKm = round(Dp/Km, 0)
+            KmEff = round((Km+Dp/100+Dm/300)/Jours, 0)
           )
-        colnames(df) <- c("Itinéraire", "Jours", "Km", "D+", "D-", "D+/Km")
+        colnames(df) <- c("Itinéraire", "Jours", "Km", "D+", "D-", "KmEff/J")
         df
       },
       rownames = FALSE,
